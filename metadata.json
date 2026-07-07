@@ -1,0 +1,6 @@
+{
+  "name": "DTECH",
+  "description": "Immersive 3D interactive portal for DTECH, a disruptive technology startup building a resilient, sustainable society.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
