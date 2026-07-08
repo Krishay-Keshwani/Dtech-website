@@ -10,9 +10,12 @@ import ResearchGrid from './components/ResearchGrid';
 import TeamSection from './components/TeamSection';
 import ContactSection from './components/ContactSection';
 import Logo from './components/Logo';
+import Loader from './components/Loader';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [viewCount, setViewCount] = useState<number>(1000);
   const lenisRef = useRef<Lenis | null>(null);
   const snapTimeoutRef = useRef<any>(null);
   const isProgrammaticScrollRef = useRef<boolean>(false);
@@ -20,6 +23,19 @@ export default function App() {
     const saved = localStorage.getItem('dtech-theme');
     return (saved === 'light' || saved === 'dark') ? saved : 'dark';
   });
+
+  useEffect(() => {
+    // Persistent total view count starting from 1000
+    const saved = localStorage.getItem('dtech-view-count');
+    let current = saved ? parseInt(saved, 10) : 1000;
+    if (isNaN(current) || current < 1000) {
+      current = 1000;
+    }
+    // Increment on session visit
+    current += 1;
+    localStorage.setItem('dtech-view-count', current.toString());
+    setViewCount(current);
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('dtech-theme', theme);
@@ -205,6 +221,9 @@ export default function App() {
   return (
     <div className={`relative min-h-screen transition-colors duration-300 ${theme === 'light' ? 'high-contrast-light bg-white text-gray-950' : 'bg-cyber-bg text-gray-100'} cyber-grid overflow-hidden`}>
       
+      {/* Centralized loader with glitch system initialization effect */}
+      <Loader onComplete={() => setIsLoading(false)} />
+
       {/* 3D WebGL Canvas Backdrop */}
       <ThreeDCanvas 
         activeSectionId={sections[activeSection]?.id || 'hero'} 
@@ -260,6 +279,11 @@ export default function App() {
           >
             {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
           </button>
+
+          <div className="hidden md:flex items-center gap-2 font-mono text-[10px] text-gray-500 bg-white/5 border border-white/[0.03] px-3 py-1 rounded">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyber-teal animate-pulse inline-block"></span>
+            <span className="text-gray-400">VIEWS: <span className="text-cyber-teal font-bold">{viewCount.toLocaleString()}</span></span>
+          </div>
 
           <div className="hidden md:flex items-center gap-2 font-mono text-[10px] text-gray-500 bg-white/5 border border-white/[0.03] px-3 py-1 rounded">
             <span className="w-1.5 h-1.5 rounded-full bg-cyber-teal animate-ping inline-block"></span>
@@ -339,9 +363,12 @@ export default function App() {
         <div>
           <span>COPYRIGHT @ DTECH. ALL RIGHTS RESERVED // 2026</span>
         </div>
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-6 items-center flex-wrap justify-center md:justify-end">
           <span className="text-gray-500">
             DTE4 Calamity And Humanities Pvt Ltd
+          </span>
+          <span className="px-2.5 py-0.5 bg-white/5 border border-white/10 rounded text-cyber-teal text-[10px] font-bold">
+            TOTAL VIEWS: {viewCount.toLocaleString()}
           </span>
         </div>
       </footer>
