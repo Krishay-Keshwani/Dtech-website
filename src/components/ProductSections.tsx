@@ -232,7 +232,7 @@ export default function ProductSections() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
           {/* Schematic Interactive Canvas */}
-          <div className="col-span-1 lg:col-span-7 glass-panel rounded-lg p-6 border-white/5 relative flex flex-col justify-between overflow-hidden min-h-[420px] md:min-h-[460px]">
+          <div className="col-span-1 lg:col-span-7 glass-panel rounded-lg p-6 border-white/5 relative flex flex-col justify-start overflow-hidden min-h-[420px] md:min-h-[460px]">
             <div>
               <div className="flex justify-between items-start">
                 <div>
@@ -273,7 +273,7 @@ export default function ProductSections() {
             </div>
 
             {/* Instructions */}
-            <div className="flex gap-2 items-center text-gray-500 text-[10px] font-mono">
+            <div className="mt-auto flex gap-2 items-center text-gray-500 text-[10px] font-mono">
               <Info className="w-3.5 h-3.5 text-cyber-crimson" />
               <span>HOVER SCENARIO NODES ABOVE TO UNLOCK SNAKE ROBOT SCHEMATICS RAW SPECS</span>
             </div>
@@ -354,7 +354,7 @@ export default function ProductSections() {
       {activeTab === 'flood' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
-          <div className="col-span-1 lg:col-span-7 glass-panel rounded-lg p-6 border-white/5 relative flex flex-col justify-between overflow-hidden min-h-[420px] md:min-h-[460px]">
+          <div className="col-span-1 lg:col-span-7 glass-panel rounded-lg p-6 border-white/5 relative flex flex-col justify-start overflow-hidden min-h-[420px] md:min-h-[460px]">
             <div>
               <div className="flex justify-between items-start">
                 <div>
@@ -404,7 +404,7 @@ export default function ProductSections() {
             </div>
 
             {/* Instructions */}
-            <div className="flex gap-2 items-center text-gray-500 text-[10px] font-mono">
+            <div className="mt-auto flex gap-2 items-center text-gray-500 text-[10px] font-mono">
               <Info className="w-3.5 h-3.5 text-cyber-blue" />
               <span>HOVER WARNING GRID NODES ABOVE TO VERIFY ULTRA-ACCURATE TELEMETRY</span>
             </div>
@@ -483,7 +483,7 @@ export default function ProductSections() {
       {activeTab === 'nadi_dhrishti' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
-          <div className="col-span-1 lg:col-span-7 glass-panel rounded-lg p-6 border-white/5 relative flex flex-col justify-between overflow-hidden min-h-[420px] md:min-h-[460px]">
+          <div className="col-span-1 lg:col-span-7 glass-panel rounded-lg p-6 border-white/5 relative flex flex-col justify-start overflow-hidden min-h-[420px] md:min-h-[460px]">
             <div>
               <div className="flex justify-between items-start">
                 <div>
@@ -533,7 +533,7 @@ export default function ProductSections() {
             </div>
 
             {/* Instructions */}
-            <div className="flex gap-2 items-center text-gray-500 text-[10px] font-mono">
+            <div className="mt-auto flex gap-2 items-center text-gray-500 text-[10px] font-mono">
               <Info className="w-3.5 h-3.5 text-cyber-teal" />
               <span>HOVER SYSTEM NODES ABOVE TO VIEW COMPUTER VISION CLASSIFICATION SCHEMES</span>
             </div>
@@ -611,7 +611,7 @@ export default function ProductSections() {
       {activeTab === 'smart_dhakkan' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
-          <div className="col-span-1 lg:col-span-7 glass-panel rounded-lg p-6 border-white/5 relative flex flex-col justify-between overflow-hidden min-h-[420px] md:min-h-[460px]">
+          <div className="col-span-1 lg:col-span-7 glass-panel rounded-lg p-6 border-white/5 relative flex flex-col justify-start overflow-hidden min-h-[420px] md:min-h-[460px]">
             <div>
               <div className="flex justify-between items-start">
                 <div>
@@ -658,7 +658,7 @@ export default function ProductSections() {
             </div>
 
             {/* Instructions */}
-            <div className="flex gap-2 items-center text-gray-500 text-[10px] font-mono">
+            <div className="mt-auto flex gap-2 items-center text-gray-500 text-[10px] font-mono">
               <Info className="w-3.5 h-3.5 text-amber-500" />
               <span>HOVER DIAGNOSTIC NODES ABOVE TO VIEW SUBTERRANEAN SENSOR SPECS</span>
             </div>
@@ -736,7 +736,7 @@ export default function ProductSections() {
       {activeTab === 'snake_id' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
-          <div className="col-span-1 lg:col-span-7 glass-panel rounded-lg p-6 border-white/5 relative flex flex-col justify-between overflow-hidden min-h-[420px] md:min-h-[460px]">
+          <div className="col-span-1 lg:col-span-7 glass-panel rounded-lg p-6 border-white/5 relative flex flex-col justify-start overflow-hidden min-h-[420px] md:min-h-[460px]">
             <div>
               <div className="flex justify-between items-start">
                 <div>
@@ -789,7 +789,7 @@ export default function ProductSections() {
             </div>
 
             {/* Instructions */}
-            <div className="flex gap-2 items-center text-gray-500 text-[10px] font-mono">
+            <div className="mt-auto flex gap-2 items-center text-gray-500 text-[10px] font-mono">
               <Info className="w-3.5 h-3.5 text-emerald-500" />
               <span>HOVER INTERACTIVE TELEMETRY LABELS TO DETECT APP FEATURES</span>
             </div>
@@ -867,7 +867,7 @@ export default function ProductSections() {
       {activeTab === 'vr_education' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
-          <div className="col-span-1 lg:col-span-7 glass-panel rounded-lg p-6 border-white/5 relative flex flex-col justify-between overflow-hidden min-h-[420px] md:min-h-[460px]">
+          <div className="col-span-1 lg:col-span-7 glass-panel rounded-lg p-6 border-white/5 relative flex flex-col justify-start overflow-hidden min-h-[420px] md:min-h-[460px]">
             <div>
               <div className="flex justify-between items-start">
                 <div>
@@ -904,7 +904,7 @@ export default function ProductSections() {
             </div>
 
             {/* Instructions */}
-            <div className="flex gap-2 items-center text-gray-500 text-[10px] font-mono">
+            <div className="mt-auto flex gap-2 items-center text-gray-500 text-[10px] font-mono">
               <Info className="w-3.5 h-3.5 text-indigo-500" />
               <span>HOVER HARDWARE NODES ABOVE TO UNLOCK EXPERIENTIAL DISASTER MODULES</span>
             </div>
