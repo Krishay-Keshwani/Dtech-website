@@ -19,6 +19,11 @@ export default function ThreeDCanvas({
   const targetBgColor = useRef(new THREE.Color('#07090e'));
   const mouse = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
 
+  const activeSectionIdRef = useRef(activeSectionId);
+  useEffect(() => {
+    activeSectionIdRef.current = activeSectionId;
+  }, [activeSectionId]);
+
   useEffect(() => {
     if (!canvasRef.current || !containerRef.current) return;
 
@@ -290,7 +295,7 @@ export default function ThreeDCanvas({
       flowParticles.geometry.attributes.position.needsUpdate = true;
 
       // Smooth section-based settings morphs
-      switch (activeSectionId) {
+      switch (activeSectionIdRef.current) {
         case 'hero':
           targetCamPos.current.set(0, 0, 7.5);
           targetCamLookAt.current.set(0, 0, 0);
@@ -387,7 +392,7 @@ export default function ThreeDCanvas({
       rippleMaterial.dispose();
       particleTexture.dispose();
     };
-  }, [activeSectionId, theme]);
+  }, [theme]);
 
   return (
     <div ref={containerRef} className="absolute inset-0 w-full h-full pointer-events-none z-0">

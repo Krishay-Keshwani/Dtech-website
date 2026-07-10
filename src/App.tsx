@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Cpu, Terminal, Radio, HelpCircle, Sun, Moon } from 'lucide-react';
 import Lenis from 'lenis';
+import { motion, AnimatePresence } from 'motion/react';
 import ThreeDCanvas from './components/ThreeDCanvas';
 import CursorTrail from './components/CursorTrail';
 import HeroSection from './components/HeroSection';
@@ -15,6 +16,7 @@ import Loader from './components/Loader';
 export default function App() {
   const [activeSection, setActiveSection] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [isNavTransitioning, setIsNavTransitioning] = useState(false);
   const [viewCount, setViewCount] = useState<number>(1000);
   const lenisRef = useRef<Lenis | null>(null);
   const snapTimeoutRef = useRef<any>(null);
@@ -193,29 +195,42 @@ export default function App() {
   }, []);
 
   const handleScrollToSection = (id: string) => {
+    const targetIdx = sections.findIndex(sec => sec.id === id);
+    if (targetIdx === activeSection) {
+      // Just do a quick scroll adjust if they click the already active section
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo('#' + id, { duration: 0.6 });
+      }
+      return;
+    }
+
     if (snapTimeoutRef.current) {
       clearTimeout(snapTimeoutRef.current);
     }
     isProgrammaticScrollRef.current = true;
-    if (lenisRef.current) {
-      lenisRef.current.scrollTo('#' + id, { 
-        duration: 1.4,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // match the beautiful exponential easing
-        onComplete: () => {
-          setTimeout(() => {
-            isProgrammaticScrollRef.current = false;
-          }, 150);
+    setIsNavTransitioning(true);
+
+    // After fade-in completes, jump to target section instantly
+    setTimeout(() => {
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo('#' + id, { 
+          immediate: true,
+        });
+      } else {
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView();
         }
-      });
-    } else {
-      const el = document.getElementById(id);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
+      }
+      
+      // Keep it completely smooth, fade the overlay out after a tiny buffer
+      setTimeout(() => {
+        setIsNavTransitioning(false);
         setTimeout(() => {
           isProgrammaticScrollRef.current = false;
-        }, 800);
-      }
-    }
+        }, 150);
+      }, 100);
+    }, 250); // Matches the start of the fade-in duration
   };
 
   return (
@@ -223,6 +238,31 @@ export default function App() {
       
       {/* Centralized loader with glitch system initialization effect */}
       <Loader onComplete={() => setIsLoading(false)} />
+
+      {/* Centralized section transition cross-fade overlay */}
+      <AnimatePresence>
+        {isNavTransitioning && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            className={`fixed inset-0 z-[99] pointer-events-auto flex items-center justify-center ${
+              theme === 'light' ? 'bg-white' : 'bg-[#07090e]'
+            }`}
+          >
+            {/* Elegant minimal futuristic transition loader */}
+            <div className="relative flex flex-col items-center">
+              <span className="font-mono text-[9px] tracking-[0.2em] text-cyber-teal/60 animate-pulse">
+                SYS_TRANSITION // LINKING CORE MODULES...
+              </span>
+              <div className="w-16 h-[1px] bg-cyber-teal/20 mt-3 overflow-hidden relative">
+                <div className="h-full bg-cyber-teal w-1/2 absolute animate-pulse" />
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* 3D WebGL Canvas Backdrop */}
       <ThreeDCanvas 
