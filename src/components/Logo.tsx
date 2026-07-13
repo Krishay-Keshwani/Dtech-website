@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import dtechMark from '../assets/dtech-mark.png';
 
 interface LogoProps {
@@ -21,17 +22,36 @@ export default function Logo({ className = '', hideText = false, size = 'md', hi
 
   return (
     <div className={`flex items-center gap-3 select-none ${className}`}>
-      {/* 3D Dotted Cube Icon (now using static image mark) */}
+      {/* 3D Dotted Cube Icon (now using static image mark with 3D perspective flip) */}
       {!hideIcon && (
-        <img
-          src={dtechMark}
-          alt="DTECH Logo Mark"
-          className="flex-shrink-0 object-contain"
-          style={{
-            width: `${70 * scaleConfig.iconScale}px`,
-            height: `${70 * scaleConfig.iconScale}px`,
+        <motion.div
+          whileHover={{ 
+            rotateY: 360,
+            scale: 1.08,
+            z: 50,
           }}
-        />
+          transition={{ 
+            type: "spring", 
+            stiffness: 150, 
+            damping: 15,
+            mass: 1 
+          }}
+          style={{ 
+            perspective: 800,
+            transformStyle: "preserve-3d"
+          }}
+          className="flex-shrink-0 cursor-pointer"
+        >
+          <img
+            src={dtechMark}
+            alt="DTECH Logo Mark"
+            className="object-contain"
+            style={{
+              width: `${70 * scaleConfig.iconScale}px`,
+              height: `${70 * scaleConfig.iconScale}px`,
+            }}
+          />
+        </motion.div>
       )}
 
       {/* Stylized Text Elements */}

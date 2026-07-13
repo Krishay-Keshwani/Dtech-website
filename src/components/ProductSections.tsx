@@ -4,100 +4,21 @@ import {
   Video, Smartphone, Compass, Waves, ShieldAlert, Laptop, MapPin
 } from 'lucide-react';
 
-interface HotspotItem {
-  id: string;
-  label: string;
-  desc: string;
-  pos: { top: string; left: string };
-  specs: string;
+interface ProductSectionsProps {
+  onKnowMore?: () => void;
+  animationsEnabled?: boolean;
 }
 
-interface HotspotButtonProps {
-  key?: string;
-  pt: HotspotItem;
-  isActive: boolean;
-  activeColorClass: string;
-  onHover: (id: string | null) => void;
-}
-
-function HotspotButton({ pt, isActive, activeColorClass, onHover }: HotspotButtonProps) {
-  return (
-    <div
-      style={{ 
-        position: 'absolute', 
-        top: pt.pos.top, 
-        left: pt.pos.left, 
-        transform: 'translate(-50%, -50%)',
-        zIndex: 40
-      }}
-      className="w-10 h-10 flex items-center justify-center cursor-pointer group"
-      onMouseEnter={() => onHover(pt.id)}
-      onMouseLeave={() => onHover(null)}
-    >
-      <div 
-        className={`w-3.5 h-3.5 rounded-full flex items-center justify-center transition-all duration-300 pointer-events-none ${
-          isActive 
-            ? `${activeColorClass} scale-150 shadow-lg outline outline-3` 
-            : 'bg-white/80 scale-100 group-hover:scale-125 group-hover:bg-white'
-        }`}
-      >
-        <span className="w-1.5 h-1.5 rounded-full bg-[#07090e] pointer-events-none" />
-      </div>
-    </div>
-  );
-}
-
-const cobraHotspots = [
-  { id: 'chassis', label: 'Flexible Micro-Joint Chassis', desc: 'Serpentine body with segments designed to slip through narrow structural gaps and rubble mounds.', pos: { top: '35%', left: '20%' }, specs: 'Segments: 8 flexible nodes, Armor: Titanium mesh' },
-  { id: 'camera', label: 'Immersive Optics Array', desc: 'Combines localized thermal imaging, night-vision infrared sensors and telemetry radar.', pos: { top: '15%', left: '50%' }, specs: 'FOV: 140°, Res: 4K Thermal, range: 45m' },
-  { id: 'gas', label: 'Life Sign Sensor Module', desc: 'Pinpoint environmental toxins, carbon levels and respiratory sounds of trapped victims.', pos: { top: '45%', left: '80%' }, specs: 'CO/CO2 detection, Geophone sonic mesh' },
-  { id: 'thruster', label: 'Aquatic Propulsion Kit', desc: 'Customizable dual waterjet modules for sub-aquatic survey and search operations.', pos: { top: '75%', left: '40%' }, specs: 'Submersion depth: 15m, runtime: 4h' }
-];
-
-const floodHotspots = [
-  { id: 'beacon', label: 'Tri-Flash Warning Beacon', desc: 'Ultra-bright solar-powered multi-stage evacuation lighting grid visible under storms.', pos: { top: '20%', left: '50%' }, specs: 'Intensity: 1200 Lumens, Modes: 3 Warning levels' },
-  { id: 'transducer', label: 'Non-Contact Radar Water Probe', desc: 'Extremely accurate ultrasonic water head level sensor defying muddy torrent mud buildup.', pos: { top: '65%', left: '30%' }, specs: 'Sampling Rate: 1s, Variance: +/- 1mm' },
-  { id: 'solar', label: 'Autarkic Smart Power Panel', desc: 'High conversion solar cells keeping internal battery reserves fully charged during outages.', pos: { top: '15%', left: '80%' }, specs: 'Power: 45W, Battery Buffer: 14 Days' },
-  { id: 'siren', label: 'Acoustic Siren Horn', desc: '120dB directional horn sending distinct warnings across river basin ranges.', pos: { top: '45%', left: '15%' }, specs: 'Audible Sector: 1.5km radial, Low power alert' }
-];
-
-const nadiDhrishtiHotspots = [
-  { id: 'lens', label: 'Specialized Polarized Lens', desc: 'Cuts reflection and glare from the sun to see clearly through murky or agitated water surface layers.', pos: { top: '35%', left: '20%' }, specs: 'Wavelength filter: 520nm green-cyan band' },
-  { id: 'neural', label: 'MurkyVision AI Core', desc: 'Low-latency deep neural network model trained on swimming and drowning postures in muddy waters.', pos: { top: '15%', left: '50%' }, specs: 'Inference speed: 14ms on-edge, precision: 96.2%' },
-  { id: 'sonar', label: 'Active Sonar Link', desc: 'Sends ultrasonic wave pulses to verify human presence when extreme silt blocks optical cameras.', pos: { top: '45%', left: '80%' }, specs: 'Frequency: 200kHz, Depth capability: 15 meters' },
-  { id: 'alert', label: 'High-Decibel Siren Beacon', desc: 'Triggers local physical strobe light sirens and forwards coordinates to rescue teams instantly.', pos: { top: '75%', left: '40%' }, specs: 'Alert broadcast: LoRa + GSM under 1 second' }
-];
-
-const smartDhakkanHotspots = [
-  { id: 'pressure_below', label: 'Hydrostatic Pressure Sensor (Sewer)', desc: 'Measures rising water levels and toxic sewer gases from inside the chamber below.', pos: { top: '65%', left: '30%' }, specs: 'Range: 0-5 Bar, Gas metrics: H2S + CH4 logging' },
-  { id: 'pressure_above', label: 'Atmospheric Surface Sensor', desc: 'Tracks flooded water pressure and debris mass gathering on the street surface above.', pos: { top: '15%', left: '80%' }, specs: 'Detects street submergence levels up to 3m' },
-  { id: 'gps', label: 'Reinforced IP68 GNSS Antenna', desc: 'Tough, anti-theft tracking chip transmitting absolute position coordinates if the lid is displaced.', pos: { top: '45%', left: '15%' }, specs: 'Battery buffer: 5 years, Protocol: LPWAN NB-IoT' },
-  { id: 'lock', label: 'Solenoid Securing Deadbolt', desc: 'Heavy-duty steel automated mechanical locking mechanism to prevent dangerous lid displacement or theft.', pos: { top: '20%', left: '50%' }, specs: 'Clamping force: 5000 Newtons, manual override key' }
-];
-
-const snakeIdHotspots = [
-  { id: 'vision', label: 'Scale Classifier Engine', desc: 'Parses snake scale patterns, head shapes, and eye slit geometries to classify the species.', pos: { top: '15%', left: '50%' }, specs: 'Dataset: 120+ Indian venomous species, offline ML core' },
-  { id: 'gps_hosp', label: 'Anti-Venom Finder', desc: 'Geolocates the closest emergency clinics stocking anti-venom for the identified snake type.', pos: { top: '65%', left: '30%' }, specs: 'Dynamic stock APIs with medical inventory sync' },
-  { id: 'first_aid', label: 'First Aid Playbook', desc: 'Interactive visual checklist guiding the user to slow heart rate, immobilize limbs, and avoid tourniquets.', pos: { top: '15%', left: '80%' }, specs: 'WHO Snakebite Management guidelines aligned' },
-  { id: 'bot', label: 'Emergency Responder Link', desc: 'One-touch automated SMS containing GPS coordinates, image upload, and clinical snake type report.', pos: { top: '45%', left: '15%' }, specs: 'Auto-sends telemetry data to state ambulance' }
-];
-
-const vrEducationHotspots = [
-  { id: 'optics', label: 'Dual 4K Wide-angle Lens', desc: '110-degree immersive field-of-view displays replicating realistic catastrophic scenarios.', pos: { top: '20%', left: '50%' }, specs: 'Refresh rate: 90Hz, Low blue-light certification' },
-  { id: 'scenarios', label: 'Procedural Scenario Engine', desc: 'Pre-loaded physical exercises simulating earthquakes, cyclones, flash-floods, and high-rise fire evacuations.', pos: { top: '65%', left: '30%' }, specs: 'Built-in rigid body physics simulator' },
-  { id: 'haptics', label: 'Force Haptic Integrator', desc: 'Direct vibration arrays in vest and controllers mimicking geological tremors or storm drafts.', pos: { top: '15%', left: '80%' }, specs: 'Response latency: <5ms, multi-channel rumble' },
-  { id: 'telemetry', label: 'Evacuation Performance Log', desc: 'Logs user reaction times, pathway choice metrics, and survival decisions during simulations.', pos: { top: '45%', left: '15%' }, specs: 'Disaster Preparedness Scorecard output report' }
-];
-
-function CobraWireframe() {
+function CobraWireframe({ animationsEnabled = true }: { animationsEnabled?: boolean }) {
   const [angle, setAngle] = useState(0);
 
   useEffect(() => {
+    if (!animationsEnabled) return;
     const interval = setInterval(() => {
       setAngle((prev) => (prev + 1.5) % 360);
     }, 60);
     return () => clearInterval(interval);
-  }, []);
+  }, [animationsEnabled]);
 
   return (
     <div className="flex gap-1 items-center z-10" style={{ transform: `rotate(${angle}deg)` }}>
@@ -114,15 +35,16 @@ function CobraWireframe() {
   );
 }
 
-function VRWireframe() {
+function VRWireframe({ animationsEnabled = true }: { animationsEnabled?: boolean }) {
   const [angle, setAngle] = useState(0);
 
   useEffect(() => {
+    if (!animationsEnabled) return;
     const interval = setInterval(() => {
       setAngle((prev) => (prev + 1.5) % 360);
     }, 60);
     return () => clearInterval(interval);
-  }, []);
+  }, [animationsEnabled]);
 
   return (
     <div className="w-[180px] h-[100px] rounded-xl border border-indigo-500/40 bg-black/40 relative flex flex-col justify-center items-center z-10" style={{ transform: `rotate(${angle / 3}deg)` }}>
@@ -139,9 +61,8 @@ function VRWireframe() {
   );
 }
 
-export default function ProductSections() {
+export default function ProductSections({ onKnowMore, animationsEnabled = true }: ProductSectionsProps) {
   const [activeTab, setActiveTab] = useState<'cobra' | 'flood' | 'nadi_dhrishti' | 'smart_dhakkan' | 'snake_id' | 'vr_education'>('cobra');
-  const [hoveredHotspot, setHoveredHotspot] = useState<string | null>(null);
 
   return (
     <section className="px-6 py-20 md:px-16 md:py-24 max-w-7xl mx-auto z-10 relative selection:bg-cyber-teal selection:text-cyber-bg">
@@ -165,7 +86,7 @@ export default function ProductSections() {
                 ? 'bg-cyber-crimson text-white shadow-lg shadow-cyber-crimson/20' 
                 : 'text-gray-400 hover:text-white hover:bg-white/[0.02]'
             }`}
-            onClick={() => { setActiveTab('cobra'); setHoveredHotspot(null); }}
+            onClick={() => setActiveTab('cobra')}
           >
             Snake Robot
           </button>
@@ -176,7 +97,7 @@ export default function ProductSections() {
                 ? 'bg-[#007aff] text-white shadow-lg shadow-cyber-blue/20' 
                 : 'text-gray-400 hover:text-white hover:bg-white/[0.02]'
             }`}
-            onClick={() => { setActiveTab('flood'); setHoveredHotspot(null); }}
+            onClick={() => setActiveTab('flood')}
           >
             Flood warning grids
           </button>
@@ -187,7 +108,7 @@ export default function ProductSections() {
                 ? 'bg-cyber-teal text-cyber-bg shadow-lg shadow-cyber-teal/20 font-semibold' 
                 : 'text-gray-400 hover:text-white hover:bg-white/[0.02]'
             }`}
-            onClick={() => { setActiveTab('nadi_dhrishti'); setHoveredHotspot(null); }}
+            onClick={() => setActiveTab('nadi_dhrishti')}
           >
             Nadi Dhrishti
           </button>
@@ -198,7 +119,7 @@ export default function ProductSections() {
                 ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20 font-semibold' 
                 : 'text-gray-400 hover:text-white hover:bg-white/[0.02]'
             }`}
-            onClick={() => { setActiveTab('smart_dhakkan'); setHoveredHotspot(null); }}
+            onClick={() => setActiveTab('smart_dhakkan')}
           >
             Smart Dhakkan
           </button>
@@ -209,7 +130,7 @@ export default function ProductSections() {
                 ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20 font-semibold' 
                 : 'text-gray-400 hover:text-white hover:bg-white/[0.02]'
             }`}
-            onClick={() => { setActiveTab('snake_id'); setHoveredHotspot(null); }}
+            onClick={() => setActiveTab('snake_id')}
           >
             Snake ID App
           </button>
@@ -220,7 +141,7 @@ export default function ProductSections() {
                 ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/20 font-semibold' 
                 : 'text-gray-400 hover:text-white hover:bg-white/[0.02]'
             }`}
-            onClick={() => { setActiveTab('vr_education'); setHoveredHotspot(null); }}
+            onClick={() => setActiveTab('vr_education')}
           >
             VR Education
           </button>
@@ -230,8 +151,7 @@ export default function ProductSections() {
       {/* activeTab === 'cobra' */}
       {activeTab === 'cobra' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          
-          {/* Schematic Interactive Canvas */}
+          {/* Schematic Canvas */}
           <div className="col-span-1 lg:col-span-7 glass-panel rounded-lg p-6 border-white/5 relative flex flex-col justify-start overflow-hidden min-h-[420px] md:min-h-[460px]">
             <div>
               <div className="flex justify-between items-start">
@@ -246,9 +166,16 @@ export default function ProductSections() {
               <p className="text-gray-400 text-xs mt-2 max-w-xl">
                 Snake Robot is DTECH's flagship mechanical platform. It scales treacherous earthquake rubble, climbs vertical concrete steps, and maneuvers underwater channels recursively.
               </p>
+              <button
+                type="button"
+                onClick={onKnowMore}
+                className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 bg-cyber-crimson/10 hover:bg-cyber-crimson border border-cyber-crimson/30 text-cyber-crimson hover:text-white font-mono text-[10px] font-bold tracking-widest uppercase rounded cursor-pointer transition-all active:scale-95 duration-200"
+              >
+                KNOW MORE &gt;&gt;
+              </button>
             </div>
 
-            {/* Simulated Schematic Graphic representation */}
+            {/* Schematic Graphic representation */}
             <div className="relative w-full h-[260px] md:h-[280px] bg-cyber-bg/50 border border-white/[0.03] rounded flex items-center justify-center my-4 overflow-hidden">
               <div className="absolute inset-0 bg-radial from-transparent to-cyber-bg opacity-30 pointer-events-none" />
               
@@ -258,24 +185,7 @@ export default function ProductSections() {
               </div>
 
               {/* Serpentine Wireframe design */}
-              <CobraWireframe />
-
-              {/* Hotspot anchor points */}
-              {cobraHotspots.map((pt) => (
-                <HotspotButton
-                  key={pt.id}
-                  pt={pt}
-                  isActive={hoveredHotspot === pt.id}
-                  activeColorClass="bg-cyber-crimson shadow-cyber-crimson/60 outline-cyber-crimson/25"
-                  onHover={setHoveredHotspot}
-                />
-              ))}
-            </div>
-
-            {/* Instructions */}
-            <div className="mt-auto flex gap-2 items-center text-gray-500 text-[10px] font-mono">
-              <Info className="w-3.5 h-3.5 text-cyber-crimson" />
-              <span>HOVER SCENARIO NODES ABOVE TO UNLOCK SNAKE ROBOT SCHEMATICS RAW SPECS</span>
+              <CobraWireframe animationsEnabled={animationsEnabled} />
             </div>
           </div>
 
@@ -284,45 +194,25 @@ export default function ProductSections() {
             <div className="glass-panel rounded-lg p-6 border-white/5 flex-1 relative overflow-hidden flex flex-col justify-between">
               <div>
                 <span className="font-mono text-[9px] text-[#818cf8] tracking-widest block uppercase mb-3">BLUEPRINT READOUT</span>
-                
-                {hoveredHotspot ? (
-                  <div>
-                    {(() => {
-                      const activePt = cobraHotspots.find(h => h.id === hoveredHotspot);
-                      if (!activePt) return null;
-                      return (
-                        <div className="space-y-3">
-                          <h4 className="text-xl font-display font-medium text-cyber-crimson">{activePt.label}</h4>
-                          <p className="text-xs text-gray-300 leading-relaxed">{activePt.desc}</p>
-                          <div className="bg-cyber-crimson/5 border border-cyber-crimson/10 p-3 rounded mt-2">
-                            <span className="text-[10px] font-mono text-gray-400 block uppercase font-semibold">Technical Metrics</span>
-                            <span className="text-xs text-white font-mono block mt-1">{activePt.specs}</span>
-                          </div>
-                        </div>
-                      );
-                    })()}
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <h4 className="text-xl font-display font-medium text-white">Interactive Serpentine Layout</h4>
-                    <p className="text-xs text-gray-400 leading-relaxed">
-                      This autonomous snake-like system integrates life signs array sensors with segmented flexible joint motors to detect people stuck in building ruins. Can be customized for deep fluid navigation or high-obstacle debris clusters.
-                    </p>
-                    
-                    <div className="grid grid-cols-2 gap-4 pt-1">
-                      <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
-                        <Anchor className="w-4 h-4 text-cyber-blue mb-1" />
-                        <span className="text-[9px] font-mono text-gray-500 block uppercase">LAND + WATER</span>
-                        <span className="text-xs text-white block mt-0.5">Flexible swimming</span>
-                      </div>
-                      <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
-                        <Flame className="w-4 h-4 text-orange-400 mb-1" />
-                        <span className="text-[9px] font-mono text-gray-500 block uppercase">CHEMICAL & FIRE</span>
-                        <span className="text-xs text-white block mt-0.5">Teflon outer skin</span>
-                      </div>
+                <div className="space-y-4">
+                  <h4 className="text-xl font-display font-medium text-white">Interactive Serpentine Layout</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed">
+                    This autonomous snake-like system integrates life signs array sensors with segmented flexible joint motors to detect people stuck in building ruins. Can be customized for deep fluid navigation or high-obstacle debris clusters.
+                  </p>
+                  
+                  <div className="grid grid-cols-2 gap-4 pt-1">
+                    <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
+                      <Anchor className="w-4 h-4 text-cyber-blue mb-1" />
+                      <span className="text-[9px] font-mono text-gray-500 block uppercase">LAND + WATER</span>
+                      <span className="text-xs text-white block mt-0.5">Flexible swimming</span>
+                    </div>
+                    <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
+                      <Flame className="w-4 h-4 text-orange-400 mb-1" />
+                      <span className="text-[9px] font-mono text-gray-500 block uppercase">CHEMICAL & FIRE</span>
+                      <span className="text-xs text-white block mt-0.5">Teflon outer skin</span>
                     </div>
                   </div>
-                )}
+                </div>
               </div>
 
               {/* Status bar */}
@@ -353,7 +243,6 @@ export default function ProductSections() {
       {/* activeTab === 'flood' */}
       {activeTab === 'flood' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          
           <div className="col-span-1 lg:col-span-7 glass-panel rounded-lg p-6 border-white/5 relative flex flex-col justify-start overflow-hidden min-h-[420px] md:min-h-[460px]">
             <div>
               <div className="flex justify-between items-start">
@@ -369,6 +258,13 @@ export default function ProductSections() {
               <p className="text-gray-400 text-xs mt-2 max-w-xl">
                 A low-cost, decentralized automated early warning array. When water basins rise to hazard limits, it triggers high-frequency beacon arrays, acoustic evacuation sirens, and pushes automatic GSM notifications to local communities instantly.
               </p>
+              <button
+                type="button"
+                onClick={onKnowMore}
+                className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 bg-[#007aff]/10 hover:bg-[#007aff] border border-cyber-blue/30 text-[#007aff] hover:text-white font-mono text-[10px] font-bold tracking-widest uppercase rounded cursor-pointer transition-all active:scale-95 duration-200"
+              >
+                KNOW MORE &gt;&gt;
+              </button>
             </div>
 
             {/* Simulated schematic */}
@@ -390,23 +286,6 @@ export default function ProductSections() {
                 </div>
                 <div className="w-8 h-4 bg-gray-700 rounded-t" />
               </div>
-
-              {/* Hotspots */}
-              {floodHotspots.map((pt) => (
-                <HotspotButton
-                  key={pt.id}
-                  pt={pt}
-                  isActive={hoveredHotspot === pt.id}
-                  activeColorClass="bg-cyber-blue shadow-cyber-blue/60 outline-cyber-blue/25"
-                  onHover={setHoveredHotspot}
-                />
-              ))}
-            </div>
-
-            {/* Instructions */}
-            <div className="mt-auto flex gap-2 items-center text-gray-500 text-[10px] font-mono">
-              <Info className="w-3.5 h-3.5 text-cyber-blue" />
-              <span>HOVER WARNING GRID NODES ABOVE TO VERIFY ULTRA-ACCURATE TELEMETRY</span>
             </div>
           </div>
 
@@ -414,45 +293,25 @@ export default function ProductSections() {
             <div className="glass-panel rounded-lg p-6 border-white/5 flex-1 relative overflow-hidden flex flex-col justify-between">
               <div>
                 <span className="font-mono text-[9px] text-cyber-teal tracking-widest block uppercase mb-3">COALITION CDRI REGISTERED blueprint</span>
-                
-                {hoveredHotspot ? (
-                  <div>
-                    {(() => {
-                      const activePt = floodHotspots.find(h => h.id === hoveredHotspot);
-                      if (!activePt) return null;
-                      return (
-                        <div className="space-y-3">
-                          <h4 className="text-xl font-display font-medium text-cyber-blue">{activePt.label}</h4>
-                          <p className="text-xs text-gray-300 leading-relaxed">{activePt.desc}</p>
-                          <div className="bg-cyber-blue/5 border border-cyber-blue/10 p-3 rounded mt-2">
-                            <span className="text-[10px] font-mono text-gray-400 block uppercase font-semibold">Technical Metrics</span>
-                            <span className="text-xs text-white font-mono block mt-1">{activePt.specs}</span>
-                          </div>
-                        </div>
-                      );
-                    })()}
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <h4 className="text-xl font-display font-medium text-white">Low-Cost Solar Node Grid</h4>
-                    <p className="text-xs text-gray-400 leading-relaxed">
-                      Custom structural layouts allow local village heads to set boundaries manually, avoiding excessive capital overhead. High visibility light flashes give instant alert indicators before flash torrent reaches residential limits.
-                    </p>
-                    
-                    <div className="grid grid-cols-2 gap-4 pt-1">
-                      <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
-                        <Zap className="w-4 h-4 text-yellow-400 mb-1" />
-                        <span className="text-[9px] font-mono text-gray-500 block uppercase">SOLAR AUTARKIC</span>
-                        <span className="text-xs text-white block mt-0.5">Runs continuously offline</span>
-                      </div>
-                      <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
-                        <ShieldCheck className="w-4 h-4 text-cyber-teal mb-1" />
-                        <span className="text-[9px] font-mono text-gray-500 block uppercase">CDRI AWARD CERTIFIED</span>
-                        <span className="text-xs text-white block mt-0.5">Coalition Standard</span>
-                      </div>
+                <div className="space-y-4">
+                  <h4 className="text-xl font-display font-medium text-white">Low-Cost Solar Node Grid</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed">
+                    Custom structural layouts allow local village heads to set boundaries manually, avoiding excessive capital overhead. High visibility light flashes give instant alert indicators before flash torrent reaches residential limits.
+                  </p>
+                  
+                  <div className="grid grid-cols-2 gap-4 pt-1">
+                    <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
+                      <Zap className="w-4 h-4 text-yellow-400 mb-1" />
+                      <span className="text-[9px] font-mono text-gray-500 block uppercase">SOLAR AUTARKIC</span>
+                      <span className="text-xs text-white block mt-0.5">Runs continuously offline</span>
+                    </div>
+                    <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
+                      <ShieldCheck className="w-4 h-4 text-cyber-teal mb-1" />
+                      <span className="text-[9px] font-mono text-gray-500 block uppercase">CDRI AWARD CERTIFIED</span>
+                      <span className="text-xs text-white block mt-0.5">Coalition Standard</span>
                     </div>
                   </div>
-                )}
+                </div>
               </div>
 
               <div className="border-t border-white/5 pt-4 mt-6">
@@ -482,7 +341,6 @@ export default function ProductSections() {
       {/* activeTab === 'nadi_dhrishti' */}
       {activeTab === 'nadi_dhrishti' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          
           <div className="col-span-1 lg:col-span-7 glass-panel rounded-lg p-6 border-white/5 relative flex flex-col justify-start overflow-hidden min-h-[420px] md:min-h-[460px]">
             <div>
               <div className="flex justify-between items-start">
@@ -498,6 +356,13 @@ export default function ProductSections() {
               <p className="text-gray-400 text-xs mt-2 max-w-xl">
                 A smart drowning detection system which uses computer vision to detect if a person is drowning or not even in murky waters.
               </p>
+              <button
+                type="button"
+                onClick={onKnowMore}
+                className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 bg-cyber-teal/10 hover:bg-cyber-teal border border-cyber-teal/30 text-cyber-teal hover:text-cyber-bg font-mono text-[10px] font-bold tracking-widest uppercase rounded cursor-pointer transition-all active:scale-95 duration-200"
+              >
+                KNOW MORE &gt;&gt;
+              </button>
             </div>
 
             {/* Simulated schematic */}
@@ -519,23 +384,6 @@ export default function ProductSections() {
                   TARGET: MONITORED
                 </span>
               </div>
-
-              {/* Hotspots */}
-              {nadiDhrishtiHotspots.map((pt) => (
-                <HotspotButton
-                  key={pt.id}
-                  pt={pt}
-                  isActive={hoveredHotspot === pt.id}
-                  activeColorClass="bg-cyber-teal shadow-cyber-teal/60 outline-cyber-teal/25"
-                  onHover={setHoveredHotspot}
-                />
-              ))}
-            </div>
-
-            {/* Instructions */}
-            <div className="mt-auto flex gap-2 items-center text-gray-500 text-[10px] font-mono">
-              <Info className="w-3.5 h-3.5 text-cyber-teal" />
-              <span>HOVER SYSTEM NODES ABOVE TO VIEW COMPUTER VISION CLASSIFICATION SCHEMES</span>
             </div>
           </div>
 
@@ -543,45 +391,25 @@ export default function ProductSections() {
             <div className="glass-panel rounded-lg p-6 border-white/5 flex-1 relative overflow-hidden flex flex-col justify-between">
               <div>
                 <span className="font-mono text-[9px] text-cyber-teal tracking-widest block uppercase mb-3">AI Blueprints Readout</span>
-                
-                {hoveredHotspot ? (
-                  <div>
-                    {(() => {
-                      const activePt = nadiDhrishtiHotspots.find(h => h.id === hoveredHotspot);
-                      if (!activePt) return null;
-                      return (
-                        <div className="space-y-3">
-                          <h4 className="text-xl font-display font-medium text-cyber-teal">{activePt.label}</h4>
-                          <p className="text-xs text-gray-300 leading-relaxed">{activePt.desc}</p>
-                          <div className="bg-cyber-teal/5 border border-cyber-teal/10 p-3 rounded mt-2">
-                            <span className="text-[10px] font-mono text-gray-400 block uppercase font-semibold">Technical Metrics</span>
-                            <span className="text-xs text-white font-mono block mt-1">{activePt.specs}</span>
-                          </div>
-                        </div>
-                      );
-                    })()}
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <h4 className="text-xl font-display font-medium text-white">MurkyWater Sight Optimization</h4>
-                    <p className="text-xs text-gray-400 leading-relaxed">
-                      This active camera telemetry setup leverages custom-built polarized filtering lenses to capture sharp high-contrast feeds, running advanced deep neural algorithms at the edge for rapid classification of distressed human movements.
-                    </p>
-                    
-                    <div className="grid grid-cols-2 gap-4 pt-1">
-                      <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
-                        <Eye className="w-4 h-4 text-cyber-teal mb-1" />
-                        <span className="text-[9px] font-mono text-gray-500 block uppercase">VISION CORE</span>
-                        <span className="text-xs text-white block mt-0.5">Anti-glare polarizer</span>
-                      </div>
-                      <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
-                        <Waves className="w-4 h-4 text-blue-400 mb-1" />
-                        <span className="text-[9px] font-mono text-gray-500 block uppercase">DROWNING POSTURE</span>
-                        <span className="text-xs text-white block mt-0.5">Real-time distress check</span>
-                      </div>
+                <div className="space-y-4">
+                  <h4 className="text-xl font-display font-medium text-white">MurkyWater Sight Optimization</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed">
+                    This active camera telemetry setup leverages custom-built polarized filtering lenses to capture sharp high-contrast feeds, running advanced deep neural algorithms at the edge for rapid classification of distressed human movements.
+                  </p>
+                  
+                  <div className="grid grid-cols-2 gap-4 pt-1">
+                    <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
+                      <Eye className="w-4 h-4 text-cyber-teal mb-1" />
+                      <span className="text-[9px] font-mono text-gray-500 block uppercase">VISION CORE</span>
+                      <span className="text-xs text-white block mt-0.5">Anti-glare polarizer</span>
+                    </div>
+                    <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
+                      <Waves className="w-4 h-4 text-blue-400 mb-1" />
+                      <span className="text-[9px] font-mono text-gray-500 block uppercase">DROWNING POSTURE</span>
+                      <span className="text-xs text-white block mt-0.5">Real-time distress check</span>
                     </div>
                   </div>
-                )}
+                </div>
               </div>
 
               <div className="border-t border-white/5 pt-4 mt-6">
@@ -610,7 +438,6 @@ export default function ProductSections() {
       {/* activeTab === 'smart_dhakkan' */}
       {activeTab === 'smart_dhakkan' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          
           <div className="col-span-1 lg:col-span-7 glass-panel rounded-lg p-6 border-white/5 relative flex flex-col justify-start overflow-hidden min-h-[420px] md:min-h-[460px]">
             <div>
               <div className="flex justify-between items-start">
@@ -626,6 +453,13 @@ export default function ProductSections() {
               <p className="text-gray-400 text-xs mt-2 max-w-xl">
                 A smart Manhole which detects the water pressure below and above the manhole while also giving its gps location.
               </p>
+              <button
+                type="button"
+                onClick={onKnowMore}
+                className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 bg-amber-500/10 hover:bg-amber-500 border border-amber-500/30 text-amber-500 hover:text-black font-mono text-[10px] font-bold tracking-widest uppercase rounded cursor-pointer transition-all active:scale-95 duration-200"
+              >
+                KNOW MORE &gt;&gt;
+              </button>
             </div>
 
             {/* Simulated schematic */}
@@ -644,23 +478,6 @@ export default function ProductSections() {
                   <Compass className="w-5 h-5 text-amber-400" />
                 </div>
               </div>
-
-              {/* Hotspots */}
-              {smartDhakkanHotspots.map((pt) => (
-                <HotspotButton
-                  key={pt.id}
-                  pt={pt}
-                  isActive={hoveredHotspot === pt.id}
-                  activeColorClass="bg-amber-500 shadow-amber-500/60 outline-amber-500/25"
-                  onHover={setHoveredHotspot}
-                />
-              ))}
-            </div>
-
-            {/* Instructions */}
-            <div className="mt-auto flex gap-2 items-center text-gray-500 text-[10px] font-mono">
-              <Info className="w-3.5 h-3.5 text-amber-500" />
-              <span>HOVER DIAGNOSTIC NODES ABOVE TO VIEW SUBTERRANEAN SENSOR SPECS</span>
             </div>
           </div>
 
@@ -668,45 +485,25 @@ export default function ProductSections() {
             <div className="glass-panel rounded-lg p-6 border-white/5 flex-1 relative overflow-hidden flex flex-col justify-between">
               <div>
                 <span className="font-mono text-[9px] text-amber-500 tracking-widest block uppercase mb-3">SUB-SURFACE NODE SPECS</span>
-                
-                {hoveredHotspot ? (
-                  <div>
-                    {(() => {
-                      const activePt = smartDhakkanHotspots.find(h => h.id === hoveredHotspot);
-                      if (!activePt) return null;
-                      return (
-                        <div className="space-y-3">
-                          <h4 className="text-xl font-display font-medium text-amber-500">{activePt.label}</h4>
-                          <p className="text-xs text-gray-300 leading-relaxed">{activePt.desc}</p>
-                          <div className="bg-amber-500/5 border border-amber-500/10 p-3 rounded mt-2">
-                            <span className="text-[10px] font-mono text-gray-400 block uppercase font-semibold">Technical Metrics</span>
-                            <span className="text-xs text-white font-mono block mt-1">{activePt.specs}</span>
-                          </div>
-                        </div>
-                      );
-                    })()}
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <h4 className="text-xl font-display font-medium text-white">Dual-Pressure Sewer Tracking</h4>
-                    <p className="text-xs text-gray-400 leading-relaxed">
-                      Smart Dhakkan prevents sudden structural displacement by monitoring critical water pressure ratios below (clogged surge) and above (heavy road flooding). It instantly triggers alarm alerts if the heavy cast iron lid gets unscrewed or stolen.
-                    </p>
-                    
-                    <div className="grid grid-cols-2 gap-4 pt-1">
-                      <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
-                        <Compass className="w-4 h-4 text-amber-400 mb-1" />
-                        <span className="text-[9px] font-mono text-gray-500 block uppercase">GPS LOCATION</span>
-                        <span className="text-xs text-white block mt-0.5">NB-IoT telemetry lock</span>
-                      </div>
-                      <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
-                        <ShieldAlert className="w-4 h-4 text-[#ff0055] mb-1" />
-                        <span className="text-[9px] font-mono text-gray-500 block uppercase">DISPLACEMENT ALERT</span>
-                        <span className="text-xs text-white block mt-0.5">Anti-theft locks</span>
-                      </div>
+                <div className="space-y-4">
+                  <h4 className="text-xl font-display font-medium text-white">Dual-Pressure Sewer Tracking</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed">
+                    Smart Dhakkan prevents sudden structural displacement by monitoring critical water pressure ratios below (clogged surge) and above (heavy road flooding). It instantly triggers alarm alerts if the heavy cast iron lid gets unscrewed or stolen.
+                  </p>
+                  
+                  <div className="grid grid-cols-2 gap-4 pt-1">
+                    <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
+                      <Compass className="w-4 h-4 text-amber-400 mb-1" />
+                      <span className="text-[9px] font-mono text-gray-500 block uppercase">GPS LOCATION</span>
+                      <span className="text-xs text-white block mt-0.5">NB-IoT telemetry lock</span>
+                    </div>
+                    <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
+                      <ShieldAlert className="w-4 h-4 text-[#ff0055] mb-1" />
+                      <span className="text-[9px] font-mono text-gray-500 block uppercase">DISPLACEMENT ALERT</span>
+                      <span className="text-xs text-white block mt-0.5">Anti-theft locks</span>
                     </div>
                   </div>
-                )}
+                </div>
               </div>
 
               <div className="border-t border-white/5 pt-4 mt-6">
@@ -735,7 +532,6 @@ export default function ProductSections() {
       {/* activeTab === 'snake_id' */}
       {activeTab === 'snake_id' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          
           <div className="col-span-1 lg:col-span-7 glass-panel rounded-lg p-6 border-white/5 relative flex flex-col justify-start overflow-hidden min-h-[420px] md:min-h-[460px]">
             <div>
               <div className="flex justify-between items-start">
@@ -751,6 +547,13 @@ export default function ProductSections() {
               <p className="text-gray-400 text-xs mt-2 max-w-xl">
                 A mobile app which helps snakebite victims to identify the snake and help them get proper medical assistance.
               </p>
+              <button
+                type="button"
+                onClick={onKnowMore}
+                className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-500/10 hover:bg-emerald-500 border border-emerald-500/30 text-emerald-500 hover:text-white font-mono text-[10px] font-bold tracking-widest uppercase rounded cursor-pointer transition-all active:scale-95 duration-200"
+              >
+                KNOW MORE &gt;&gt;
+              </button>
             </div>
 
             {/* Simulated schematic */}
@@ -775,23 +578,6 @@ export default function ProductSections() {
                   </span>
                 </div>
               </div>
-
-              {/* Hotspots */}
-              {snakeIdHotspots.map((pt) => (
-                <HotspotButton
-                  key={pt.id}
-                  pt={pt}
-                  isActive={hoveredHotspot === pt.id}
-                  activeColorClass="bg-emerald-500 shadow-emerald-500/60 outline-emerald-500/25"
-                  onHover={setHoveredHotspot}
-                />
-              ))}
-            </div>
-
-            {/* Instructions */}
-            <div className="mt-auto flex gap-2 items-center text-gray-500 text-[10px] font-mono">
-              <Info className="w-3.5 h-3.5 text-emerald-500" />
-              <span>HOVER INTERACTIVE TELEMETRY LABELS TO DETECT APP FEATURES</span>
             </div>
           </div>
 
@@ -799,45 +585,25 @@ export default function ProductSections() {
             <div className="glass-panel rounded-lg p-6 border-white/5 flex-1 relative overflow-hidden flex flex-col justify-between">
               <div>
                 <span className="font-mono text-[9px] text-emerald-500 tracking-widest block uppercase mb-3">MOBILE TELEMEDICINE REWRITE</span>
-                
-                {hoveredHotspot ? (
-                  <div>
-                    {(() => {
-                      const activePt = snakeIdHotspots.find(h => h.id === hoveredHotspot);
-                      if (!activePt) return null;
-                      return (
-                        <div className="space-y-3">
-                          <h4 className="text-xl font-display font-medium text-emerald-500">{activePt.label}</h4>
-                          <p className="text-xs text-gray-300 leading-relaxed">{activePt.desc}</p>
-                          <div className="bg-emerald-500/5 border border-emerald-500/10 p-3 rounded mt-2">
-                            <span className="text-[10px] font-mono text-gray-400 block uppercase font-semibold">Technical Metrics</span>
-                            <span className="text-xs text-white font-mono block mt-1">{activePt.specs}</span>
-                          </div>
-                        </div>
-                      );
-                    })()}
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <h4 className="text-xl font-display font-medium text-white">Species Detection & First Aid</h4>
-                    <p className="text-xs text-gray-400 leading-relaxed">
-                      Snakebite hazards cause severe casualties in deep rural environments. By deploying offline AI models, victims identify species instantly from a safe snapshot, while the app guides them on calm breathing first aid and guides rescue ambulances with anti-venom direct.
-                    </p>
-                    
-                    <div className="grid grid-cols-2 gap-4 pt-1">
-                      <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
-                        <Smartphone className="w-4 h-4 text-emerald-400 mb-1" />
-                        <span className="text-[9px] font-mono text-gray-500 block uppercase">OFFLINE PREDICT</span>
-                        <span className="text-xs text-white block mt-0.5">Runs offline in deep woods</span>
-                      </div>
-                      <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
-                        <ShieldCheck className="w-4 h-4 text-emerald-400 mb-1" />
-                        <span className="text-[9px] font-mono text-gray-500 block uppercase">WHO COMPLIANCE</span>
-                        <span className="text-xs text-white block mt-0.5">Official rescue advice</span>
-                      </div>
+                <div className="space-y-4">
+                  <h4 className="text-xl font-display font-medium text-white">Species Detection & First Aid</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed">
+                    Snakebite hazards cause severe casualties in deep rural environments. By deploying offline AI models, victims identify species instantly from a safe snapshot, while the app guides them on calm breathing first aid and guides rescue ambulances with anti-venom direct.
+                  </p>
+                  
+                  <div className="grid grid-cols-2 gap-4 pt-1">
+                    <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
+                      <Smartphone className="w-4 h-4 text-emerald-400 mb-1" />
+                      <span className="text-[9px] font-mono text-gray-500 block uppercase">OFFLINE PREDICT</span>
+                      <span className="text-xs text-white block mt-0.5">Runs offline in deep woods</span>
+                    </div>
+                    <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
+                      <ShieldCheck className="w-4 h-4 text-emerald-400 mb-1" />
+                      <span className="text-[9px] font-mono text-gray-500 block uppercase">WHO COMPLIANCE</span>
+                      <span className="text-xs text-white block mt-0.5">Official rescue advice</span>
                     </div>
                   </div>
-                )}
+                </div>
               </div>
 
               <div className="border-t border-white/5 pt-4 mt-6">
@@ -866,7 +632,6 @@ export default function ProductSections() {
       {/* activeTab === 'vr_education' */}
       {activeTab === 'vr_education' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          
           <div className="col-span-1 lg:col-span-7 glass-panel rounded-lg p-6 border-white/5 relative flex flex-col justify-start overflow-hidden min-h-[420px] md:min-h-[460px]">
             <div>
               <div className="flex justify-between items-start">
@@ -882,6 +647,13 @@ export default function ProductSections() {
               <p className="text-gray-400 text-xs mt-2 max-w-xl">
                 Using VR headset and created experiences, teach students on Disaster Management.
               </p>
+              <button
+                type="button"
+                onClick={onKnowMore}
+                className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-500/10 hover:bg-indigo-500 border border-indigo-500/30 text-indigo-500 hover:text-white font-mono text-[10px] font-bold tracking-widest uppercase rounded cursor-pointer transition-all active:scale-95 duration-200"
+              >
+                KNOW MORE &gt;&gt;
+              </button>
             </div>
 
             {/* Simulated schematic */}
@@ -889,24 +661,7 @@ export default function ProductSections() {
               <div className="absolute inset-0 bg-radial from-transparent to-cyber-bg opacity-30 pointer-events-none" />
               
               {/* VR Headset wireframe */}
-              <VRWireframe />
-
-              {/* Hotspots */}
-              {vrEducationHotspots.map((pt) => (
-                <HotspotButton
-                  key={pt.id}
-                  pt={pt}
-                  isActive={hoveredHotspot === pt.id}
-                  activeColorClass="bg-indigo-500 shadow-indigo-500/60 outline-indigo-500/25"
-                  onHover={setHoveredHotspot}
-                />
-              ))}
-            </div>
-
-            {/* Instructions */}
-            <div className="mt-auto flex gap-2 items-center text-gray-500 text-[10px] font-mono">
-              <Info className="w-3.5 h-3.5 text-indigo-500" />
-              <span>HOVER HARDWARE NODES ABOVE TO UNLOCK EXPERIENTIAL DISASTER MODULES</span>
+              <VRWireframe animationsEnabled={animationsEnabled} />
             </div>
           </div>
 
@@ -914,45 +669,25 @@ export default function ProductSections() {
             <div className="glass-panel rounded-lg p-6 border-white/5 flex-1 relative overflow-hidden flex flex-col justify-between">
               <div>
                 <span className="font-mono text-[9px] text-indigo-500 tracking-widest block uppercase mb-3">VR CLASSROOM READOUT</span>
-                
-                {hoveredHotspot ? (
-                  <div>
-                    {(() => {
-                      const activePt = vrEducationHotspots.find(h => h.id === hoveredHotspot);
-                      if (!activePt) return null;
-                      return (
-                        <div className="space-y-3">
-                          <h4 className="text-xl font-display font-medium text-indigo-500">{activePt.label}</h4>
-                          <p className="text-xs text-gray-300 leading-relaxed">{activePt.desc}</p>
-                          <div className="bg-indigo-500/5 border border-indigo-500/10 p-3 rounded mt-2">
-                            <span className="text-[10px] font-mono text-gray-400 block uppercase font-semibold">Technical Metrics</span>
-                            <span className="text-xs text-white font-mono block mt-1">{activePt.specs}</span>
-                          </div>
-                        </div>
-                      );
-                    })()}
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <h4 className="text-xl font-display font-medium text-white">Experiential Preparedness drills</h4>
-                    <p className="text-xs text-gray-400 leading-relaxed">
-                      VR Education transforms dry manual emergency evacuation booklets into highly engaging virtual scenarios. Students learn split-second geological evacuation paths, seismic structural check routines, and emergency life safety measures safely.
-                    </p>
-                    
-                    <div className="grid grid-cols-2 gap-4 pt-1">
-                      <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
-                        <Video className="w-4 h-4 text-indigo-400 mb-1" />
-                        <span className="text-[9px] font-mono text-gray-500 block uppercase">4K OPTICS</span>
-                        <span className="text-xs text-white block mt-0.5">Stereoscopic depth</span>
-                      </div>
-                      <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
-                        <Laptop className="w-4 h-4 text-indigo-400 mb-1" />
-                        <span className="text-[9px] font-mono text-gray-500 block uppercase">SIMULATOR DRILLS</span>
-                        <span className="text-xs text-white block mt-0.5">Earthquake + flood response</span>
-                      </div>
+                <div className="space-y-4">
+                  <h4 className="text-xl font-display font-medium text-white">Experiential Preparedness drills</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed">
+                    VR Education transforms dry manual emergency evacuation booklets into highly engaging virtual scenarios. Students learn split-second geological evacuation paths, seismic structural check routines, and emergency life safety measures safely.
+                  </p>
+                  
+                  <div className="grid grid-cols-2 gap-4 pt-1">
+                    <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
+                      <Video className="w-4 h-4 text-indigo-400 mb-1" />
+                      <span className="text-[9px] font-mono text-gray-500 block uppercase">4K OPTICS</span>
+                      <span className="text-xs text-white block mt-0.5">Stereoscopic depth</span>
+                    </div>
+                    <div className="border border-white/5 p-3 rounded bg-white/[0.01]">
+                      <Laptop className="w-4 h-4 text-indigo-400 mb-1" />
+                      <span className="text-[9px] font-mono text-gray-500 block uppercase">SIMULATOR DRILLS</span>
+                      <span className="text-xs text-white block mt-0.5">Earthquake + flood response</span>
                     </div>
                   </div>
-                )}
+                </div>
               </div>
 
               <div className="border-t border-white/5 pt-4 mt-6">

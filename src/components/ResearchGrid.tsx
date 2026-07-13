@@ -1,7 +1,7 @@
 import { Layers, Globe, GraduationCap, ChevronRight, Activity, Cpu } from 'lucide-react';
 import { motion } from 'motion/react';
 
-export default function ResearchGrid() {
+export default function ResearchGrid({ onCommissionClick }: { onCommissionClick?: () => void }) {
   const bentoItems = [
     {
       id: "research",
@@ -112,7 +112,10 @@ export default function ResearchGrid() {
                   <span className="text-white block mt-0.5 font-semibold">{item.metric}</span>
                 </div>
 
-                <div className={`text-[10px] font-mono flex items-center gap-1 cursor-pointer group-hover:translate-x-1.5 transition-transform ${item.accent}`}>
+                <div 
+                  onClick={onCommissionClick}
+                  className={`text-[10px] font-mono flex items-center gap-1 cursor-pointer group-hover:translate-x-1.5 transition-transform ${item.accent}`}
+                >
                   <span>COMMISSION INQUIRES</span>
                   <ChevronRight className="w-4 h-4" />
                 </div>
@@ -120,11 +123,6 @@ export default function ResearchGrid() {
             </div>
           );
         })}
-      </div>
-
-      {/* Grid footer statement */}
-      <div className="mt-6 font-mono text-center text-xs text-gray-500">
-        <span>* CONSULTANCY IS DEPLOYED ACROSS ENTERPRISES AND URBAN MUNICIPALITIES JOINTLY.</span>
       </div>
     </section>
   );

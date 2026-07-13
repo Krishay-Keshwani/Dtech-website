@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Cpu, Terminal, Radio, HelpCircle, Sun, Moon } from 'lucide-react';
+import { Cpu, Terminal, Radio, HelpCircle, Sun, Moon, Zap, ZapOff } from 'lucide-react';
 import Lenis from 'lenis';
 import { motion, AnimatePresence } from 'motion/react';
 import ThreeDCanvas from './components/ThreeDCanvas';
@@ -25,6 +25,14 @@ export default function App() {
     const saved = localStorage.getItem('dtech-theme');
     return (saved === 'light' || saved === 'dark') ? saved : 'dark';
   });
+  const [animationsEnabled, setAnimationsEnabled] = useState<boolean>(() => {
+    const saved = localStorage.getItem('dtech-animations-enabled');
+    return saved !== 'false';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('dtech-animations-enabled', animationsEnabled.toString());
+  }, [animationsEnabled]);
 
   useEffect(() => {
     // Persistent total view count starting from 1000
@@ -54,7 +62,7 @@ export default function App() {
   };
 
   const sections = [
-    { id: 'hero', label: 'Init' },
+    { id: 'hero', label: 'Home' },
     { id: 'doctrine', label: 'Doctrine' },
     { id: 'blueprints', label: 'Blueprints' },
     { id: 'consultancy', label: 'Consultancy' },
@@ -265,13 +273,15 @@ export default function App() {
       </AnimatePresence>
 
       {/* 3D WebGL Canvas Backdrop */}
-      <ThreeDCanvas 
-        activeSectionId={sections[activeSection]?.id || 'hero'} 
-        theme={theme}
-      />
+      {animationsEnabled && (
+        <ThreeDCanvas 
+          activeSectionId={sections[activeSection]?.id || 'hero'} 
+          theme={theme}
+        />
+      )}
 
       {/* Custom glowing cursor trail effect */}
-      <CursorTrail theme={theme} />
+      {animationsEnabled && <CursorTrail theme={theme} />}
 
       {/* Futuristic CRT Scanline overlay decoration */}
       <div className="cyber-overlay" />
@@ -309,6 +319,25 @@ export default function App() {
 
         {/* Right Header Status / Language node */}
         <div className="flex items-center gap-4">
+          {/* Animation Toggle for Low-end Devices */}
+          <button
+            type="button"
+            onClick={() => setAnimationsEnabled(!animationsEnabled)}
+            className={`p-2 border rounded transition-all cursor-pointer shadow-md flex items-center justify-center ${
+              animationsEnabled
+                ? 'border-cyber-teal/30 bg-cyber-teal/5 text-cyber-teal hover:bg-cyber-teal/15 animate-none'
+                : 'border-gray-600 bg-gray-500/10 text-gray-500 hover:bg-gray-500/20'
+            }`}
+            title={animationsEnabled ? 'Turn Off Animations (Performance Mode)' : 'Turn On Animations (Immersive Mode)'}
+            aria-label="Toggle Animations"
+          >
+            {animationsEnabled ? (
+              <Zap className="w-4 h-4 animate-pulse" />
+            ) : (
+              <ZapOff className="w-4 h-4 text-gray-500" />
+            )}
+          </button>
+
           {/* Accessibility Theme Toggle Button */}
           <button
             type="button"
@@ -378,12 +407,15 @@ export default function App() {
 
         {/* Section 2: Product Blueprints Overlay */}
         <div id="blueprints" className="w-full border-t border-white/5 bg-[#07090e]/30">
-          <ProductSections />
+          <ProductSections 
+            onKnowMore={() => handleScrollToSection('contact')} 
+            animationsEnabled={animationsEnabled}
+          />
         </div>
 
         {/* Section 3: Bento Consultancy Overlay */}
         <div id="consultancy" className="w-full border-t border-white/5">
-          <ResearchGrid />
+          <ResearchGrid onCommissionClick={() => handleScrollToSection('contact')} />
         </div>
 
         {/* Section 4: Academic Networks & Scholars Overlay */}

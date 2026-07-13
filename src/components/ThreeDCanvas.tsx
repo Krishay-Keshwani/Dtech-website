@@ -262,6 +262,10 @@ export default function ThreeDCanvas({
     let frameId: number;
     let clock = new THREE.Clock();
 
+    const currentCamLookAt = new THREE.Vector3(0, 0, 0);
+    const activeFlowColor = new THREE.Color(theme === 'light' ? 0x1d4ed8 : 0x007aff);
+    const activeGlobeColor = new THREE.Color(theme === 'light' ? 0x0d9488 : 0x0df2c9);
+
     const animate = () => {
       frameId = requestAnimationFrame(animate);
 
@@ -299,8 +303,8 @@ export default function ThreeDCanvas({
         case 'hero':
           targetCamPos.current.set(0, 0, 7.5);
           targetCamLookAt.current.set(0, 0, 0);
-          flowMaterial.color.setHex(theme === 'light' ? 0x1d4ed8 : 0x007aff); // Blue
-          globeMaterial.color.setHex(theme === 'light' ? 0x0d9488 : 0x0df2c9); // Teal
+          activeFlowColor.setHex(theme === 'light' ? 0x1d4ed8 : 0x007aff); // Blue
+          activeGlobeColor.setHex(theme === 'light' ? 0x0d9488 : 0x0df2c9); // Teal
           gridHelper.material.opacity = 0;
           rippleMaterial.opacity = 0;
           break;
@@ -308,8 +312,8 @@ export default function ThreeDCanvas({
         case 'doctrine':
           targetCamPos.current.set(-2, 1.5, 6);
           targetCamLookAt.current.set(1, 0, 0);
-          flowMaterial.color.setHex(theme === 'light' ? 0x16a34a : 0x39ff14); // Green climate
-          globeMaterial.color.setHex(theme === 'light' ? 0x0d9488 : 0x0df2c9);
+          activeFlowColor.setHex(theme === 'light' ? 0x16a34a : 0x39ff14); // Green climate
+          activeGlobeColor.setHex(theme === 'light' ? 0x0d9488 : 0x0df2c9);
           gridHelper.material.opacity = 0;
           rippleMaterial.opacity = 0;
           break;
@@ -318,8 +322,8 @@ export default function ThreeDCanvas({
           // Move side anchor focus to display product schematics cleanly
           targetCamPos.current.set(2.5, -0.5, 5);
           targetCamLookAt.current.set(-1.2, 0.2, 0);
-          flowMaterial.color.setHex(theme === 'light' ? 0xe11d48 : 0xff0055); // Disaster theme warning ruby-red
-          globeMaterial.color.setHex(theme === 'light' ? 0xd97706 : 0xffaa00); // Warning gold
+          activeFlowColor.setHex(theme === 'light' ? 0xe11d48 : 0xff0055); // Disaster theme warning ruby-red
+          activeGlobeColor.setHex(theme === 'light' ? 0xd97706 : 0xffaa00); // Warning gold
           gridHelper.material.opacity = 0.1;
           rippleMaterial.opacity = 0.05;
           break;
@@ -327,8 +331,8 @@ export default function ThreeDCanvas({
         case 'consultancy':
           targetCamPos.current.set(0, 4, 8);
           targetCamLookAt.current.set(0, -1, 0);
-          flowMaterial.color.setHex(theme === 'light' ? 0x1d4ed8 : 0x007aff); // Connected Tech Blue
-          globeMaterial.color.setHex(theme === 'light' ? 0x1d4ed8 : 0x007aff);
+          activeFlowColor.setHex(theme === 'light' ? 0x1d4ed8 : 0x007aff); // Connected Tech Blue
+          activeGlobeColor.setHex(theme === 'light' ? 0x1d4ed8 : 0x007aff);
           gridHelper.material.opacity = 0.3;
           rippleMaterial.opacity = 0.2;
           break;
@@ -336,8 +340,8 @@ export default function ThreeDCanvas({
         case 'academy':
           targetCamPos.current.set(-1.5, -1, 4.5);
           targetCamLookAt.current.set(0.5, 0.5, 0);
-          flowMaterial.color.setHex(theme === 'light' ? 0xd97706 : 0xffd700); // golden
-          globeMaterial.color.setHex(theme === 'light' ? 0x334155 : 0xffffff);
+          activeFlowColor.setHex(theme === 'light' ? 0xd97706 : 0xffd700); // golden
+          activeGlobeColor.setHex(theme === 'light' ? 0x334155 : 0xffffff);
           gridHelper.material.opacity = 0.05;
           rippleMaterial.opacity = 0.05;
           break;
@@ -346,9 +350,15 @@ export default function ThreeDCanvas({
         default:
           targetCamPos.current.set(0, 0, 8);
           targetCamLookAt.current.set(0, 0, 0);
+          activeFlowColor.setHex(theme === 'light' ? 0x1d4ed8 : 0x007aff);
+          activeGlobeColor.setHex(theme === 'light' ? 0x0d9488 : 0x0df2c9);
           gridHelper.material.opacity = 0.1;
           rippleMaterial.opacity = 0.1;
       }
+
+      // Smoothly interpolate the colors for zero-stutter gorgeous fluid transitions
+      flowMaterial.color.lerp(activeFlowColor, 0.04);
+      globeMaterial.color.lerp(activeGlobeColor, 0.04);
 
       // Simple subtle resting grid breathing wave
       const positions = rippleGeometry.attributes.position.array as Float32Array;
@@ -365,10 +375,9 @@ export default function ThreeDCanvas({
       camera.position.lerp(targetCamPos.current, 0.04);
       
       // Calculate lookAt tracking vector
-      const currentLookAt = new THREE.Vector3(0, 0, 0);
       // We estimate looking target by starting from active target and lerping slowly
-      currentLookAt.lerp(targetCamLookAt.current, 0.04);
-      camera.lookAt(currentLookAt);
+      currentCamLookAt.lerp(targetCamLookAt.current, 0.04);
+      camera.lookAt(currentCamLookAt);
 
       renderer.render(scene, camera);
     };
