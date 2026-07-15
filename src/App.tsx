@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Cpu, Terminal, Radio, HelpCircle, Sun, Moon, Zap, ZapOff } from 'lucide-react';
 import Lenis from 'lenis';
 import { motion, AnimatePresence } from 'motion/react';
+import { Analytics } from '@vercel/analytics/react';
 import ThreeDCanvas from './components/ThreeDCanvas';
 import CursorTrail from './components/CursorTrail';
 import HeroSection from './components/HeroSection';
@@ -444,6 +445,9 @@ export default function App() {
           </span>
         </div>
       </footer>
+
+      {/* Vercel Web Analytics */}
+      <Analytics />
 
     </div>
   );
